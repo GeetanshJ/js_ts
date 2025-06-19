@@ -1,3 +1,160 @@
+1. JS starts → Global Execution Context banta hai
+2. Memory Phase → sab hoist hota hai (var = undefined, let/const = TDZ, func = heap)
+3. Execution Phase → lines run hoti hain, assign + call
+4. Function Call → naya Execution Context banta hai
+5. Function returns → context destroy ho jaata hai
+
+
+
+## ✅ Step-by-Step JavaScript Code Execution Flow (With Memory)
+
+
+### 🧠 1. Jab JS File Run Hoti Hai
+
+Jaise hi JS engine (browser ya Node.js) file run karta hai, sabse pehle ek **Global Execution Context (GEC)** banata hai.
+
+> **Execution Context** = JS ka "thinking space"
+> Har baar koi code chalega, uska ek naya context banega
+
+
+### ⚙️ 2. Execution Context ke Do Phases Hote Hain:
+
+
+1️⃣ Memory Creation Phase (Hoisting)
+2️⃣ Code Execution Phase
+
+
+
+### ✅ Phase 1: Memory Creation (Hoisting)
+
+Is phase mein JS engine:
+
+| Kya karta hai                    | Kaise karta hai                          |
+| -------------------------------- | ---------------------------------------- |
+| `var` variables ko hoist         | Stack mein daalta hai `undefined` se     |
+| `let`/`const` ko hoist karta hai | But TDZ mein daalta hai (uninitialized)  |
+| Functions (declaration) ko hoist | Heap mein rakhta hai, stack mein pointer |
+
+#### Example:
+
+var a = 5;
+let b = 10;
+const c = 15;
+
+function sayHi() {
+  console.log("Hi");
+}
+
+
+#### 🔍 Memory after hoisting:
+
+🗂️ **Stack (Global Execution Context)**:
+
+a → undefined
+b → TDZ (Temporal Dead Zone)
+c → TDZ
+sayHi → pointer to Heap
+
+
+📦 **Heap**:
+
+sayHi → ƒ sayHi() { ... }
+
+
+### ✅ Phase 2: Code Execution
+
+Ab JS line-by-line code execute karta hai:
+
+* `a = 5` → ho gaya assign
+* `b = 10` → TDZ se nikal ke assign
+* `c = 15` → TDZ se nikal ke assign
+* `sayHi()` call → new execution context banega
+
+
+## 🔄 Jab Function Call Hota Hai
+
+sayHi();
+
+* JS ek **new Function Execution Context (FEC)** banata hai
+* Same 2-phase kaam hota hai:
+
+  1. Memory Creation
+  2. Execution
+
+### ✅ Where Things are Stored?
+
+| Item             | Stored In | Details                      |
+| ---------------- | --------- | ---------------------------- |
+| Primitive values | Stack     | Directly stored (`a = 5`)    |
+| Reference values | Heap      | Objects, arrays, functions   |
+| Function ref     | Stack     | Function name points to Heap |
+| let/const vars   | Stack     | But TDZ until assigned       |
+
+
+
+## 💥 TDZ (Temporal Dead Zone)
+
+
+console.log(x); // ❌ Error
+let x = 5;
+
+
+* `x` already declared in memory, but TDZ mein hai
+* Jab tak assign nahi hota, access nahi kar sakte
+
+## 📊 Final Summary Table
+
+| Feature                 | `var`       | `let` / `const` | Function Declaration       |
+| ----------------------- | ----------- | --------------- | -------------------------- |
+| Hoisted                 | ✅ Yes       | ✅ Yes (but TDZ) | ✅ Yes                      |
+| Default value           | `undefined` | Not initialized | Function object            |
+| Memory Location         | Stack       | Stack           | Ref in Stack, body in Heap |
+| Accessible before init? | ✅ Yes       | ❌ TDZ           | ✅ Yes                      |
+
+
+## 👇 Visual (Text-based Representation)
+
+
+Before Execution:
+
+Stack:
+---------
+a → undefined
+b → TDZ
+c → TDZ
+sayHi → [ref to Heap]
+
+Heap:
+---------
+sayHi → function object
+
+After Execution:
+
+Stack:
+---------
+a → 5
+b → 10
+c → 15
+sayHi → [ref]
+
+Heap:
+---------
+sayHi → ƒ sayHi() { console.log("Hi") }
+```
+
+---
+
+## 🧠 Concept Flow Summary:
+
+
+1. JS starts → Global Execution Context banta hai
+2. Memory Phase → sab hoist hota hai (var = undefined, let/const = TDZ, func = heap)
+3. Execution Phase → lines run hoti hain, assign + call
+4. Function Call → naya Execution Context banta hai
+5. Function returns → context destroy ho jaata hai
+```
+
+
 difference between >> and  >>> is >> will add 0 or 1 depending upon the number is negative or positive
 but >>> add 0 only
 
@@ -180,7 +337,8 @@ Isliye arrow functions ka this change nahi hota, chahe jahan bhi call karo.
 
 
 
-
+`ARRAY METHODS`
+==============
 Array some() Method
 Array reduce() Method
 Array map() Method
@@ -255,3 +413,96 @@ Array reverse() Method
 # allSettled mein array dega with status and value/reason
 # race mein first one dega resolve/reject
 # any first resolved vrna aggregate error agar saare reject
+
+
+
+
+
+***************************** 
+# normal function mein this depends vo kahan call hua ha 
+function show() {
+  console.log(this.name);
+}
+
+const user = {
+  name: "Alice",
+  display: show
+};
+
+user.display();   // 👉 this = user → Output: "Alice"
+show();           // 👉 this = global/window → Output: undefined (strict mode)
+
+
+# arrow function mein vo jahan define hua ha uske lexical scope pe depend krta ha
+const user = {
+  name: "Bob",
+  show: () => {
+    console.log(this.name);
+  }
+};
+
+user.show();   // 👉 Output: undefined (arrow ka `this` outer scope ka hai)
+
+
+
+
+
+
+
+`TYPES OF BINDING`  => Jab JavaScript function execute hota hai, toh uss function ke andar likha hua this kisko refer karega — ye cheez binding se decide hoti hai.
+=================
+
+# default binding 
+normal function call , this is global in browser and {} in local
+
+# implicit binding
+jab hum obj.func() call krte ha engine apne app this bind krta ha
+
+# explicit binding
+jab hum manual call krte ha like greet().call(obj) using call/bind/apply    
+
+************** difference between call,apply is call mein paramters comma seprate apply mein array mein
+
+# new binding
+jab bhi hum new keyword se bnate ha toh ek naya empty object bnta ha this usko refer krta ha
+
+
+
+
+
+# TDZ TEMPORAL DEAD ZONE
+
+jo let and const hote ha unko declare se phle access nahi kr skte 
+
+
+
+
+`TYPES OF FUNCTION IN JS`
+===========================
+| Function Type                                         | Description                                            |
+| ----------------------------------------------------- | ------------------------------------------------------ |
+| **1. Named Function**                                 | Regular function with a name                           |
+| **2. Anonymous Function**                             | Function without a name (often used in callbacks)      |
+| **3. Arrow Function (`=>`)**                          | Short syntax, no `this`, no `arguments`                |
+| **4. Function Expression**                            | Function stored in a variable                          |
+| **5. IIFE (Immediately Invoked Function Expression)** | Runs instantly after definition                        |
+| **6. Callback Function**                              | Passed as argument to another function                 |
+| **7. Constructor Function**                           | Used with `new` keyword to create objects              |
+| **8. Generator Function (`function*`)**               | Can pause using `yield`, powerful in async/data stream |
+| **9. Async Function (`async/await`)**                 | Handle asynchronous code like sync                     |
+| **10. Higher-order Function**                         | Accepts/returns another function                       |
+| **11. Recursive Function**                            | Calls itself                                           |
+| **12. Closures**                                      | Function along with its lexical scope                  |
+| **13. Method (in object)**                            | Function defined inside object                         |
+| **14. Static Method**                                 | Function inside class, called on class not instance    |
+| **15. Getter/Setter**                                 | Special object methods for reading/writing properties  |
+
+
+
+
+
+
+
+
+
+

@@ -94,15 +94,25 @@
 
 // class based
 
-let pro = Promise. any([
-    Promise.reject("A"),
-    Promise.reject("B"),
-    Promise.reject("C"),
-    Promise.resolve("D"),
-])
+// let pro = Promise. any([
+//     Promise.reject("A"),
+//     Promise.reject("B"),
+//     Promise.reject("C"),
+//     Promise.resolve("D"),
+// ])
 
-pro.then((result) => {
-    console.log(result);
-}).catch((err) => {
-    console.log(err);
-});
+// pro.then((result) => {
+//     console.log(result);
+// }).catch((err) => {
+//     console.log(err);
+// });
+
+// let obj = {}
+
+// function abc(){}
+
+// abc.ca
+
+
+
+
