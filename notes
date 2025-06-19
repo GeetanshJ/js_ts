@@ -1,0 +1,257 @@
+difference between >> and  >>> is >> will add 0 or 1 depending upon the number is negative or positive
+but >>> add 0 only
+
+unary opeartor + => converts string to int like
+unary  opeartor - => converts string to neg int
+string str = "12"
+# +str => 12 and -str = -12
+
+
+V8 engine working
+=================
+
+first js code is converted to AST(abstract syntax tree) like a+b is written as + as root and a and b as child
+second then Iginition - bytecode interpreter converts to bytecode
+third TurboFan which is JIT replaces the machine code to byte code
+
+
+===========================================================================
+Simple Explanation: Compilation vs Interpretation vs JIT in JavaScript (V8)
+===========================================================================
+1. Compiled Languages (C++, etc.)
+Aapka poora code compile time pe machine code mein badal jata hai.
+Jab aap program run karte ho, toh CPU directly wahi machine code chalata hai.
+Matlab: Jo code aap likhte ho, wo CPU instructions ban jaate hain pehle se.
+
+
+2. Interpreted Languages (Python, initially JavaScript)
+Aapka code pehle machine code mein nahi badalta.Interpreter ek aisa program hai jo line-by-line aapka code padh ke samajh ke turant chalata hai.
+Interpreter khud machine code mein hota hai, jo CPU chalata hai.
+Interpreter code ko ek intermediate form (bytecode) mein convert karta hai, fir usko execute karta hai.
+Matlab: CPU directly aapka original code nahi chalata, CPU interpreter ko chalata hai, aur interpreter aapke code ko samajh ke chalata hai.
+
+3. JIT (Just-In-Time) Compilation (V8 JS engine)
+JavaScript ko pehle interpreter (Ignition) run karta hai, jisse code turant start ho jata hai.
+Interpreter dekh raha hota hai ki konsa code baar-baar chal raha hai.
+Jo code zyada chal raha hai (hot code), usko JIT compiler (TurboFan) native machine code mein convert kar deta hai.
+Matlab:
+Pehle aapka code interpreter ke through chalta hai (slow).
+Baad mein wohi code native machine code ban jaata hai jo CPU directly chalata hai (fast).
+
+
+
+| Stage              | Code ka form                          | Machine code kya kar raha hai                                                        |
+| ------------------ | ------------------------------------- | ------------------------------------------------------------------------------------ |
+| Compile (C++)      | Machine code (exe file)               | CPU directly run karta hai                                                           |
+| Interpret (Python) | Bytecode, interpreted                 | Interpreter machine code CPU pe chalta hai, aur interpreter aapka code run karta hai |
+| JIT (V8)           | Initially bytecode, phir machine code | Pehle interpreter run karta hai, phir JIT compiled code CPU direct chalata hai       |
+
+
+
+
+
+
+
+
+`Prototype ek object ha jo dusre objects ke methods ke lia source bn jata ha, agar koi method na mila kisi object mein toh uske prototype mein dundhta ha`
+
+
+
+
+
+### 1. `Object.keys(obj)`
+**Gets an array of the object’s own property names (keys).**
+const person = { name: "Alice", age: 25 };
+const keys = Object.keys(person);
+console.log(keys); // Output: ["name", "age"]
+
+
+### 2. `Object.values(obj)`
+**Gets an array of the object’s own property values.**
+const person = { name: "Alice", age: 25 };
+const values = Object.values(person);
+console.log(values); // Output: ["Alice", 25]
+
+
+### 3. `Object.entries(obj)`
+**Gets an array of `[key, value]` pairs of the object’s own properties.**
+const person = { name: "Alice", age: 25 };
+const entries = Object.entries(person);
+console.log(entries); 
+// Output: [["name", "Alice"], ["age", 25]]
+
+
+### 4. `Object.assign(target, source)`
+**Copies properties from source object(s) to target object.**
+const target = { a: 1 };
+const source = { b: 2, c: 3 };
+Object.assign(target, source);
+console.log(target); 
+// Output: { a: 1, b: 2, c: 3 }
+
+
+### 5. `obj.hasOwnProperty(prop)`
+**Checks if an object has a property as its own (not inherited).**
+const person = { name: "Alice" };
+console.log(person.hasOwnProperty("name")); // true
+console.log(person.hasOwnProperty("toString")); // false, inherited method
+
+
+### 6. `Object.freeze(obj)`
+**Prevents adding, deleting, or modifying properties on the object.**
+const person = { name: "Alice" };
+Object.freeze(person);
+person.name = "Bob";    // This will not change the property
+person.age = 30;        // Cannot add new properties
+delete person.name;     // Cannot delete properties
+console.log(person); // Output: { name: "Alice" }
+
+
+### 7. `Object.is(value1, value2)`
+**Checks if two values are exactly the same, handling edge cases like `NaN`.**
+console.log(Object.is(25, 25));         // true
+console.log(Object.is(NaN, NaN));       // true (unlike ===)
+console.log(Object.is(0, -0));           // false (unlike ===)
+
+
+### 8. `Object.getPrototypeOf(obj)`
+**Returns the prototype (internal `[[Prototype]]`) of the object.**
+const arr = [];
+console.log(Object.getPrototypeOf(arr) === Array.prototype); // true
+const obj = {};
+console.log(Object.getPrototypeOf(obj) === Object.prototype); // true
+
+
+### 9. `Object.create(proto)`
+**Creates a new object with the given prototype.**
+const proto = {
+  greet() {
+    return "Hello!";
+  }
+};
+const obj = Object.create(proto);
+console.log(obj.greet()); // Output: "Hello!"
+
+
+### 10. `Object.seal(obj)`
+**Prevents adding or deleting properties, but allows modifying existing ones.**
+const person = { name: "Alice" };
+Object.seal(person);
+
+person.name = "Bob";    // Allowed
+person.age = 30;        // Adding new property ignored
+delete person.name;     // Deleting property ignored
+
+console.log(person);    // Output: { name: "Bob" }
+
+
+
+
+
+
+1. this points to object that called the function
+2. simple function have their own this and arrow function take this from their parent where they were created
+
+# Normal (simple) function:
+this us object ko point karta hai jo function ko call kar raha hota hai.
+Agar kisi object ke andar method ki tarah call karo, to this wo object hota hai.
+Agar direct call karo (like func()), to browser mein this window hota hai, aur Node.js mein undefined (strict mode) ya global (non-strict).
+
+# Arrow function:
+Arrow function apna this khud nahi banata.
+Wo apna this lexical scope se leta hai, matlab jahan wo define hua tha, wahi this use karta hai.
+Isliye arrow functions ka this change nahi hota, chahe jahan bhi call karo.
+
+
+
+
+
+
+
+| Method                   | Syntax                 | Memory Use               | Prototype Control      | Performance | Use When                             | ✅ Reason for Memory/Performance                                                   |
+| ------------------------ | ---------------------- | ----------------------   | ---------------------  | ----------- | ------------------------------------ | --------------------------------------------------------------------------------- |
+| **Object Literal**       | `{}`                   | ❌ More (method copied) | ❌ Default only        | 🟠 Medium   | One-off objects, quick coding        | Har object me method ki copy banti hai (no sharing)                               |
+| **Factory Function**     | `function()`           | ❌ More                 | ❌ Unless set manually | 🔴 Low      | Reusable objects, but not high-scale | Har baar nayi object aur method memory me create hoti hai                         |
+| **Constructor Function** | `new Func()`           | ✅ Optimized            | ✅ Customizable        | 🟢 High     | Shared methods, traditional OOP      | Method ek hi jagah (prototype pe), sab objects share karte hain                   |
+| **Class**                | `class {}`             | ✅ Optimized            | ✅ Customizable        | 🟢 High     | Modern OOP, team projects            | Behind the scenes same as constructor+prototype, readable syntax                  |
+| **Object.create()**      | `Object.create(proto)` | ✅ Optimized            | ✅ Full control        | 🟡 Medium   | Inheritance by object chaining       | Methods proto me hote hain, shared hote hain, but V8 thoda kam optimize karta hai |
+
+
+
+
+
+
+Array some() Method
+Array reduce() Method
+Array map() Method
+Array every() Method
+Array flat() Method
+Array flatMap() Method
+Array filter() Method
+Array findindex() Method
+Array find() Method
+Array fill() Method
+Array forEach() Method
+Array sort() Method
+Array concat() Method
+Array includes() Method
+Array reverse() Method
+
+| Scenario               | `all()`       | `race()`     | `allSettled()`  | `any()`          |
+| ---------------------- | ------------  | ------------ | --------------- | ---------------- |
+| All pass               | ✅ All values | ✅ First pass | ✅ All fulfilled | ✅ First pass     |
+| All fail               | ❌ First fail | ❌ First fail | ✅ All rejected  | ❌ AggregateError |
+| Pass, Fail, Fail, Pass | ❌ First fail | ✅ or ❌       | ✅ Mixed         | ✅ First pass     |
+| Fail, Pass, Pass, Fail | ❌ First fail | ✅ or ❌       | ✅ Mixed         | ✅ First pass     |
+
+
+
+# promise.all
+
+| Scenario                     | Output                      |
+| ---------------------------- | --------------------------- |
+| 1. All pass                  | ✅ `["A", "B", "C", "D"]`    |
+| 2. All fail                  | ❌ `"A"` *(first rejection)* |
+| 3. \[pass, fail, fail, pass] | ❌ `"B"` *(first rejection)* |
+| 4. \[fail, pass, pass, fail] | ❌ `"A"` *(first rejection)* |
+
+
+
+# promise.race
+
+| Scenario                     | Output                                                    |
+| ---------------------------- | --------------------------------------------------------- |
+| 1. All pass                  | ✅ `"A"` *(any one that finishes first)*                   |
+| 2. All fail                  | ❌ `"A"` *(any one that finishes first)*                   |
+| 3. \[pass, fail, fail, pass] | ✅ or ❌ (depends who wins, often `"A"` or `"B"`)           |
+| 4. \[fail, pass, pass, fail] | ✅ or ❌ (depends who finishes first, often `"A"` or `"B"`) |
+
+
+
+# promise.allSettled
+
+| Scenario                     | Output                                                 |
+| ---------------------------- | ------------------------------------------------------ |
+| 1. All pass                  | ✅ `[{status: "fulfilled", value: "A"}, ...]`           |
+| 2. All fail                  | ✅ `[{status: "rejected", reason: "A"}, ...]`           |
+| 3. \[pass, fail, fail, pass] | ✅ `[{fulfilled}, {rejected}, {rejected}, {fulfilled}]` |
+| 4. \[fail, pass, pass, fail] | ✅ `[{rejected}, {fulfilled}, {fulfilled}, {rejected}]` |
+
+
+
+# promise.any
+
+| Scenario                     | Output                            |
+| ---------------------------- | --------------------------------- |
+| 1. All pass                  | ✅ `"A"` *(any first one)*         |
+| 2. All fail                  | ❌ `AggregateError` *(no success)* |
+| 3. \[pass, fail, fail, pass] | ✅ `"A"`                           |
+| 4. \[fail, pass, pass, fail] | ✅ `"B"` *(first pass in order)*   |
+
+
+
+
+# all mein array dega agar saare fulfill ha vrna first rejection
+# allSettled mein array dega with status and value/reason
+# race mein first one dega resolve/reject
+# any first resolved vrna aggregate error agar saare reject
