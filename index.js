@@ -1,20 +1,44 @@
 
 
 let stream;
+let face = "user";
 
 async function play() {
   stream = await navigator.mediaDevices.getUserMedia({
-    video: { facingMode: "user" },
+    video: { facingMode: face },
     audio: true,
   });
   document.querySelector("video").srcObject = stream;
 }
 
-async function pause() {
-  stream.getTracks().forEach((element) => {
-    element.stop();
-  });
+async function pauseAudio() {
+  let audio = stream.getAudioTracks();
+  if(audio.length){
+    audio[0].enabled = false;
+  }
+}
 
-  stream = null;
-  document.querySelector("video").srcObject = null;
+async function resumeAudio() {
+  let audio = stream.getAudioTracks();
+  if(audio.length){
+    audio[0].enabled = true;
+  }
+}
+
+async function pauseCamera() {
+  let cam = stream.getVideoTracks();
+  if(cam.length){
+    cam[0].enabled = false;
+  }
+}
+
+async function resumeCamera() {
+  let cam = stream.getVideoTracks();
+  if(cam.length){
+    cam[0].enabled = true;
+  }
+}
+
+async function switchCamera() {
+    face = face === "user" ? "environment" : "user"
 }
