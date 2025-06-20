@@ -1,4 +1,7 @@
-let stream;
+document.addEventListener("DOMContentLoaded",(e) => {
+  e.preventDefault();
+
+  let stream;
 let face = "environment";
 
 async function play() {
@@ -41,3 +44,5 @@ async function switchCamera() {
     face = face === "user" ? "environment" : "user"
     await play()
 }
+
+})
