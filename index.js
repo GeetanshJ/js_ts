@@ -1,7 +1,5 @@
-
-
 let stream;
-let face = "user";
+let face = "environment";
 
 async function play(face) {
   stream = await navigator.mediaDevices.getUserMedia({
