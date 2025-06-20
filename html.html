@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <p id="ih"></p>
+    <p id="it"></p>
+    <p id="tc"></p>
+
+    <div id="box">
+      <b>Hello</b> World <span style="display: none">Hidden</span>
+    </div> -->
+
+    <video autoplay></video>
+    <button onclick="play()">Play</button>
+    <button onclick="pause()">Pause</button>
+  </body>
+
+  <script>
+    let stream;
+
+    async function play() {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: true,
+      });
+      document.querySelector("video").srcObject = stream;
+    }
+
+    async function pause() {
+      stream.getTracks().forEach((element) => {
+        element.stop();
+      });
+
+      stream = null;
+      document.querySelector("video").srcObject = null;
+    }
+
+    // document.getElementById("ih").innerHTML = "<b>Hello</b>"
+    // document.getElementById("it").innerText = "<b>Hello</b>"
+    // document.getElementById("tc").textContent = "<b>Hello</b>"
+    // console.log(document.getElementById("box").textContent);
+    // navigator.geolocation.getCurrentPosition(function(pos) {
+    //   let coords = pos.coords;
+    //   console.log("Lat:", coords.latitude);
+    //   console.log("Lng:", coords.longitude);
+    //   console.log("Accuracy:", coords.accuracy + " meters");
+    // },
+    //   function(error) {
+    //     switch(error.code) {
+    //       case error.PERMISSION_DENIED:
+    //         alert("Permission denied");
+    //         break;
+    //       case error.POSITION_UNAVAILABLE:
+    //         alert("Location unavailable");
+    //         break;
+    //       case error.TIMEOUT:
+    //         alert("Request timed out");
+    //         break;
+    //       default:
+    //         alert("Unknown error");
+    //     }
+    //   }
+
+    // );
+  </script>
+</html>
