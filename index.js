@@ -41,5 +41,5 @@ async function resumeCamera() {
 
 async function switchCamera() {
     face = face === "user" ? "environment" : "user"
-    play(face)
+    await play(face)
 }
