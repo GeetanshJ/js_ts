@@ -1,7 +1,7 @@
 let stream;
 let face = "environment";
 
-async function play(face) {
+async function play() {
   stream = await navigator.mediaDevices.getUserMedia({
     video: { facingMode: face },
     audio: true,
@@ -39,5 +39,5 @@ async function resumeCamera() {
 
 async function switchCamera() {
     face = face === "user" ? "environment" : "user"
-    await play(face)
+    await play()
 }
