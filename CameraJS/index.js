@@ -2,7 +2,7 @@ let stream;
 let face = "environment";
 
 async function play() {
-  stream = await navigator.mediaDevices.getUserMedia({
+  stream = await navigator.mediaDevices.getUserMedia({ 
     video: { facingMode: face },
     audio: true,
   });
